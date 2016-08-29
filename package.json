@@ -1,4 +1,8 @@
 {
-  "name": "application-name",
-  "version": "0.0.1"
+  "name": "fis3 source",
+  "version": "0.0.1",
+  "dependencies": {
+    "liftoff": "^2.3.0",
+    "minimist": "^1.2.0"
+  }
 }
