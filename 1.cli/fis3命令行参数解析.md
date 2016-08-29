@@ -68,7 +68,7 @@ $ node parse.js -x 3 -y 4 -n5 -abc --beep=boop foo bar baz
 
 `argv._`: 包含所有匿名参数（没有与之关联的名称）, 其值是一个数组
 
-其他参考: [minimist命令行参数解析原理]()
+其他参考: [minimist命令行参数解析原理](./minimist命令行参数解析原理.md)
 
 
 ## 三、liffoff
