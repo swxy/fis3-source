@@ -97,6 +97,7 @@ testLiftoff.launch({
 });
 ```
 
+在父级目录执行, 不设置`root`选项
 ```
 // launch in parent category
 $ node 1.cli/liftoffCli.js
@@ -109,8 +110,10 @@ $ node 1.cli/liftoffCli.js
   modulePath: undefined,
   modulePackage: {},
   configFiles: {} }
+```
 
-
+在父级目录执行, 设置`root`选项
+```
 // launch in parent category with root option
 $ node 1.cli/liftoffCli.js -r 1.cli
 // or with file option
@@ -125,8 +128,10 @@ $ node 1.cli/liftoffCli.js -f 1.cli/liftoff-conf.js
   modulePath: undefined,
   modulePackage: {},
   configFiles: {} }
+```
 
-
+在当前目录执行, 设置`root`选项
+```
 // launch in current category
 $ node liftoffCli.js
 //output
