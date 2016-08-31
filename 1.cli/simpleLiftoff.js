@@ -5,6 +5,7 @@
  * {
     name: 'testLiftoff',
     configName: 'liftoff-conf',
+    moduleName: 'testLiftoff',
     extensions: {
         '.js': null,
         '.json': null
@@ -24,16 +25,29 @@ const util = require('util');
 const path = require('path');
 const events = require('events');
 
-class LiftOffTest extends events.EventEmitter {
+const fs = require('fs');
+const util = require('util');
+const path = require('path');
+const events = require('events');
+
+class SimpleLiftoff extends events.EventEmitter {
     constructor (opts) {
         super();
+        //events.EventEmitter.call(this);
         this.parseOptions(opts)
     }
     launch (opts, fn) {
         if (typeof fn !== 'function') {
             throw new Error('You must provide a callback function');
         }
-        fn.call(this, this.buildEnvironment(opts));
+        process.title = this.opts.processTitle;
+
+        process.nextTick((err) => {
+            if (err) {
+                throw err;
+            }
+            fn.call(this, this.buildEnvironment(opts));
+        })
     }
     buildEnvironment (opts = {}) {
         let searchPaths = this.opts.searchPaths.slice();
@@ -71,7 +85,8 @@ class LiftOffTest extends events.EventEmitter {
             cwd: cwd,
             configNameSearch: configNameSearch,
             configPath: configPath,
-            configBase: configBase
+            configBase: configBase,
+            modulePath: this.findModule()
         }
     }
 
@@ -87,9 +102,13 @@ class LiftOffTest extends events.EventEmitter {
             searchPaths: []
         };
         if (opts.name) {
+            opts.processTitle = opts.processTitle || opts.name;
             opts.configName = opts.configName || opts.name + 'file';
+            opts.moduleName = opts.moduleName || opts.name;
         }
+        if (!opts.processTitle) throw new Error('You must specify a processTitle');
         if (!opts.configName) throw new Error('You must specify a configName');
+        if (!opts.moduleName) throw new Error('You must specify a moduleName');
 
         this.opts = Object.assign(defaultOpts, opts);
     }
@@ -155,6 +174,16 @@ class LiftOffTest extends events.EventEmitter {
         }
         return null;
     }
+    findModule () {
+        let modulePath;
+        try {
+            modulePath = require.resolve(this.opts.moduleName);
+        }
+        catch (e) {
+            // console.error(e);
+        }
+        return modulePath;
+    }
 }
 
-module.exports = LiftOffTest;
+module.exports = SimpleLiftoff;
