@@ -74,6 +74,9 @@ $ node parse.js -x 3 -y 4 -n5 -abc --beep=boop foo bar baz
 ## 三、liffoff
 使用liftoff实现自定义命令行工具, 管理命令和配置文件之间的依赖关系,使得可以在任意目录执行命令,并可以正确的使用指定的配置文件。
 
+其大致原理是: 根据提供的配置文件名称, 需要去查找的目录（如果没有提供,默认为执行程序的目录）来查找配置文件。
+或者提供指定的配置文件的路径来精确查找。 [简化版实现liftoff](./simpleLiftoff.js)
+
 使用:
 ```js
 const Liftoff = require('liftoff');
@@ -97,7 +100,7 @@ testLiftoff.launch({
 });
 ```
 
-在父级目录执行, 不设置`root`选项
+在父级目录执行, 不设置`cwd`选项
 ```
 // launch in parent category
 $ node 1.cli/liftoffCli.js
@@ -112,7 +115,7 @@ $ node 1.cli/liftoffCli.js
   configFiles: {} }
 ```
 
-在父级目录执行, 设置`root`选项
+在父级目录执行, 设置`cwd`选项
 ```
 // launch in parent category with root option
 $ node 1.cli/liftoffCli.js -r 1.cli
@@ -130,7 +133,7 @@ $ node 1.cli/liftoffCli.js -f 1.cli/liftoff-conf.js
   configFiles: {} }
 ```
 
-在当前目录执行, 设置`root`选项
+在当前目录执行
 ```
 // launch in current category
 $ node liftoffCli.js
